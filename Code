@@ -1,0 +1,35 @@
+#include <reg51.h>
+
+// Define the PIR sensor pin and servo motor control pins
+sbit PIR = P1^0;
+sbit ServoMotor = P2^0;
+
+void delay(unsigned int milliseconds) {
+    unsigned int i, j;
+    for (i = 0; i < milliseconds; i++)
+        for (j = 0; j < 1275; j++);
+}
+
+void rotateClockwise() {
+    ServoMotor = 1;
+    delay(1); // Adjust delay for desired rotation angle
+    ServoMotor = 0;
+    delay(19); // Adjust delay for desired rotation angle
+}
+
+void rotateAntiClockwise() {
+    ServoMotor = 1;
+    delay(2); // Adjust delay for desired rotation angle
+    ServoMotor = 0;
+    delay(18); // Adjust delay for desired rotation angle
+}
+
+void main() {
+    while (1) {
+        if (PIR == 1) {
+            rotateClockwise(); // Open the door
+            delay(5000); // Keep the door open for 5 seconds
+            rotateAntiClockwise(); // Close the door
+        }
+    }
+}
